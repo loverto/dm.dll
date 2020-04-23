@@ -28,7 +28,12 @@ function getDM () {
   try {
     return new winax.Object('dm.dmsoft')
   } catch (e) {
-    execSync(`regsvr32 ${path.resolve(__dirname, 'dm.dll')} /s`)
+    try {
+      execSync(`regsvr32 ${path.resolve(__dirname, 'dm.dll')} /s`)
+    } catch (e) {
+      // fix electron not work
+      execSync(`regsvr32 ${path.resolve(__dirname.replace('app.asar','app.asar.unpacked'), 'dm.dll')} /s`)
+    }
     return new winax.Object('dm.dmsoft')
   }
 }
